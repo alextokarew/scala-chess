@@ -13,7 +13,7 @@ class Board {
   def endGame = false
 
   def possibleMoves(player:Color) = {
-
+    Nil
   }
 
   private def figure(col:Int, color:Color) = col match {
