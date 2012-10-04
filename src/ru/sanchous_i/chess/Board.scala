@@ -5,12 +5,41 @@ import collection.mutable
 class Board {
   val fields = new mutable.HashMap[Field,Piece]
 
-  def endGame = false
+  def move(from:Field, to:Field, color:Color) : Boolean = {
+    val piece = fields get from
+    val destination = fields get to
 
-  def possibleMoves(player:Color) = {
-    Nil
+    def hasPiece = piece match {
+      case Some(Piece(pieceColor)) => pieceColor == color
+      case _ => false
+    }
+
+    def correctDestination = destination match {
+      case None => true
+      case Some(Piece(pieceColor)) => pieceColor != color
+      case _ => false
+    }
+
+    def pieceCanMove = piece.canMove(from,to)
+
+    val checks = List(hasPiece _, correctDestination _, pieceCanMove _)
+
+    def canMove(i : Int) : Boolean =
+      if (i >= checks.length) true
+      else if (checks(i)()) canMove(i + 1)
+      else false
+
+    if (canMove(0)) {
+      doMove(from,to,piece)
+      true
+    }
+    false
   }
 
+  private def doMove(from:Field,to:Field,piece:Piece) {
+    fields remove from
+    fields put (to,piece.get)
+  }
 
   private def initialPiece(col:Char,row:Int) = {
     def figure(col:Char, color:Color) = col match {

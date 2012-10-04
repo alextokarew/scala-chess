@@ -1,14 +1,7 @@
 package ru.sanchous_i.chess
 
-/**
- * Created with IntelliJ IDEA.
- * User: Sanchous_I
- * Date: 23.09.12
- * Time: 12:10
- * To change this template use File | Settings | File Templates.
- */
-sealed abstract class Piece(val color: Color) {
-
+sealed abstract case class Piece(color: Color) {
+  def canMove(from: Field, to: Field) = false
 }
 
 case class Pawn(override val color: Color) extends Piece(color)
