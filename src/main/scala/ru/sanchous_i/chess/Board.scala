@@ -4,6 +4,8 @@ import collection.mutable
 
 class Board {
   val fields = new mutable.HashMap[Field,Piece]
+  val moveHistory = new mutable.LinkedList[(Piece,Field,Field)]()
+
 
   def move(from:Field, to:Field, color:Color) : Boolean = {
     val piece = fields get from
@@ -20,7 +22,7 @@ class Board {
       case _ => false
     }
 
-    def pieceCanMove = piece.canMove(from,to)
+    def pieceCanMove = true
 
     val checks = List(hasPiece _, correctDestination _, pieceCanMove _)
 
@@ -30,7 +32,7 @@ class Board {
       else false
 
     if (canMove(0)) {
-      doMove(from,to,piece)
+      doMove(from,to,piece.get)
       true
     }
     false
@@ -38,7 +40,7 @@ class Board {
 
   private def doMove(from:Field,to:Field,piece:Piece) {
     fields remove from
-    fields put (to,piece.get)
+    fields put (to,piece)
   }
 
   private def initialPiece(col:Char,row:Int) = {

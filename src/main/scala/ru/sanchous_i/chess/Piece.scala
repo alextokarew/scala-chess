@@ -1,8 +1,6 @@
 package ru.sanchous_i.chess
 
-sealed abstract case class Piece(color: Color) {
-  def canMove(from: Field, to: Field) = false
-}
+sealed abstract case class Piece(color: Color)
 
 case class Pawn(override val color: Color) extends Piece(color)
 case class Rook(override val color: Color) extends Piece(color)

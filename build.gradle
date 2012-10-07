@@ -1,0 +1,33 @@
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+idea.module.iml {
+    beforeMerged { module ->
+        module.dependencies.clear()
+    }
+    whenMerged { module ->
+        module.dependencies*.exported = true
+    }
+}
+
+idea.project.ipr {
+    beforeMerged { project ->
+        project.modulePaths.clear()
+    }
+    withXml { provider ->
+        provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+// Libraries needed to run the scala tools
+    scalaTools 'org.scala-lang:scala-compiler:2.9.1'
+    scalaTools 'org.scala-lang:scala-library:2.9.1'
+// Libraries needed for scala api
+    compile 'org.scala-lang:scala-library:2.9.1'
+
+    testCompile 'org.scalatest:scalatest_2.9.0:1.8'
+}
